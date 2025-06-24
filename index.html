@@ -127,7 +127,7 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
 
-        .player-info {
+        .player-info { /* Renamed to bot-info */
             display: flex;
             align-items: center;
             gap: 15px;
@@ -135,7 +135,7 @@
             margin-bottom: 10px;
         }
 
-        .player-avatar {
+        .player-avatar { /* Renamed to bot-avatar */
             width: 60px;
             height: 60px;
             border-radius: 50%;
@@ -334,20 +334,20 @@
             }
         }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
+    <div class="container" id="home-section">
         <h1>Welcome to Metamob Esports News!</h1>
         <p>Your go-to source for the latest updates, scores, and analysis on all games in the Metamob universe.</p>
     </div>
 
     <nav>
-        <a href="#home-section">Home</a> <a href="https://www.youware.com/project/kxdqxg1nse" target="_blank" rel="noopener noreferrer">About Metamob Universe</a>
+        <a href="#home-section">Home</a>
+        <a href="https://www.youware.com/project/kxdqxg1nse" target="_blank" rel="noopener noreferrer">About Metamob Universe</a>
         <a href="#latest-news">Latest News</a>
         <a href="#game-updates">Game Updates</a>
         <a href="#fantasy-picks">Fantasy Picks</a> </nav>
-
-    <div class="container" id="home-section"> </div>
 
     <div class="container" id="latest-news">
         <h2>Latest Esports News</h2>
@@ -376,7 +376,8 @@
 
     <div class="fantasy-container" id="fantasy-picks">
         <div class="fantasy-header">
-            <h1>WolfStreet Fantasy Picks</h1>
+            <h1>Bot Battle Predictions!</h1>
+            <p>Predict the performance of the Wolf and Saint bots in the next game cycle!</p>
         </div>
 
         <section class="balance-section">
@@ -389,57 +390,74 @@
         </section>
 
         <section class="picks-section">
-            <h2 class="fantasy-section-h2">Select Your Picks</h2>
+            <h2 class="fantasy-section-h2">Make Your Picks</h2>
 
             <div class="pick-card">
                 <div class="player-info">
-                    <img src="https://via.placeholder.com/60" alt="Player Image" class="player-avatar">
-                    <h3>LeBron James</h3>
-                    <p>Lakers - SF</p>
+                    <img src="https://img.icons8.com/color/96/wolf.png" alt="Wolf Bot Icon" class="player-avatar">
+                    <h3>Wolf Bot (Aggressive)</h3>
+                    <p>Focuses on high earnings</p>
                 </div>
                 <div class="stat-line">
-                    <span class="stat-name">Points</span>
-                    <span class="stat-value">25.5</span>
+                    <span class="stat-name">Money Earned</span>
+                    <span class="stat-value">$1,500,000</span>
                 </div>
                 <div class="pick-options">
-                    <button class="pick-btn" data-pick="lebron-points-more">MORE</button>
-                    <button class="pick-btn" data-pick="lebron-points-less">LESS</button>
+                    <button class="pick-btn" data-pick="wolf-money-more">MORE</button>
+                    <button class="pick-btn" data-pick="wolf-money-less">LESS</button>
                 </div>
             </div>
 
             <div class="pick-card">
                 <div class="player-info">
-                    <img src="https://via.placeholder.com/60" alt="Player Image" class="player-avatar">
-                    <h3>Nikola Jokic</h3>
-                    <p>Nuggets - C</p>
+                    <img src="https://img.icons8.com/fluency/96/dove.png" alt="Saint Bot Icon" class="player-avatar">
+                    <h3>Saint Bot (Cautious)</h3>
+                    <p>Minimizes regulatory attention</p>
                 </div>
                 <div class="stat-line">
-                    <span class="stat-name">Rebounds + Assists</span>
-                    <span class="stat-value">22.0</span>
+                    <span class="stat-name">SEC Heat Generated</span>
+                    <span class="stat-value">15%</span>
                 </div>
                 <div class="pick-options">
-                    <button class="pick-btn" data-pick="jokic-ra-more">MORE</button>
-                    <button class="pick-btn" data-pick="jokic-ra-less">LESS</button>
+                    <button class="pick-btn" data-pick="saint-heat-more">MORE</button>
+                    <button class="pick-btn" data-pick="saint-heat-less">LESS</button>
                 </div>
             </div>
 
             <div class="pick-card">
                 <div class="player-info">
-                    <img src="https://via.placeholder.com/60" alt="Player Image" class="player-avatar">
-                    <h3>Patrick Mahomes</h3>
-                    <p>Chiefs - QB</p>
+                    <img src="https://img.icons8.com/color/96/wolf.png" alt="Wolf Bot Icon" class="player-avatar">
+                    <h3>Wolf Bot (Aggressive)</h3>
+                    <p>Fast growth strategy</p>
                 </div>
                 <div class="stat-line">
-                    <span class="stat-name">Passing Yards</span>
-                    <span class="stat-value">295.5</span>
+                    <span class="stat-name">Upgrades Purchased</span>
+                    <span class="stat-value">5</span>
                 </div>
                 <div class="pick-options">
-                    <button class="pick-btn" data-pick="mahomes-pass-more">MORE</button>
-                    <button class="pick-btn" data-pick="mahomes-pass-less">LESS</button>
+                    <button class="pick-btn" data-pick="wolf-upgrades-more">MORE</button>
+                    <button class="pick-btn" data-pick="wolf-upgrades-less">LESS</button>
                 </div>
             </div>
 
-            </section>
+            <div class="pick-card">
+                <div class="player-info">
+                    <img src="https://img.icons8.com/fluency/96/dove.png" alt="Saint Bot Icon" class="player-avatar">
+                    <h3>Saint Bot (Cautious)</h3>
+                    <p>Steady passive income</p>
+                </div>
+                <div class="stat-line">
+                    <span class="stat-name">Passive Income/Min</span>
+                    <span class="stat-value">$500</span>
+                </div>
+                <div class="pick-options">
+                    <button class="pick-btn" data-pick="saint-income-more">MORE</button>
+                    <button class="pick-btn" data-pick="saint-income-less">LESS</button>
+                </div>
+            </div>
+
+
+        </section>
 
         <section class="entry-section">
             <h2 class="fantasy-section-h2">Your Entry</h2>
@@ -485,7 +503,9 @@
                     existingSelection.classList.remove('selected');
                 }
                 button.classList.add('selected');
-                selectedPicks[pickId.split('-')[0]] = pickId; // Store selected pick
+                // Store selected pick unique to the bot/stat combination
+                const botAndStat = pickId.split('-').slice(0, 2).join('-');
+                selectedPicks[botAndStat] = pickId;
 
                 updatePayout();
             });
@@ -502,10 +522,10 @@
 
         function updatePayout() {
             const entry = parseFloat(entryAmountInput.value) || 0;
-            const numberOfPicksSelected = Object.keys(selectedPicks).length;
+            const numberOfUniquePicksSelected = Object.keys(selectedPicks).length;
 
             // Simplified payout logic: If 2 or more picks selected, show a payout
-            if (numberOfPicksSelected >= 2) {
+            if (numberOfUniquePicksSelected >= 2) {
                 potentialPayoutSpan.textContent = `$${(entry * payoutMultiplier).toFixed(2)}`;
             } else {
                 potentialPayoutSpan.textContent = `$0.00`;
@@ -523,10 +543,18 @@
             console.log('Payment Method:', document.querySelector('.payment-btn.active').dataset.currency);
         });
 
-        // Add some dynamic content for player images if needed (not active in this static HTML)
-        // You would typically replace "https://via.placeholder.com/60" with actual image URLs.
+        // Optional: Smooth scrolling for navigation links
+        document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
 
     </script>
 </body>
-        </html>
+    </html>
     
