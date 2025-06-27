@@ -1,0 +1,1459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meta Mob Syndicate - Esports Intelligence & Bot Tracker</title>
+    <meta name="description" content="Unified cyberpunk gaming platform combining Meta Mob Syndicate's esports intelligence with Bot Tracker's prize pick betting system">
+    
+    <!-- Fonts and Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Custom cyberpunk colors */
+            --cyber-dark: hsl(240, 45%, 6%);
+            --cyber-primary: hsl(240, 30%, 16%);
+            --cyber-secondary: hsl(220, 26%, 21%);
+            --mob-gold: hsl(45, 93%, 47%);
+            --bot-purple: hsl(246, 83%, 67%);
+            --bot-pink: hsl(330, 81%, 60%);
+            --success-green: hsl(158, 76%, 48%);
+            --warning-yellow: hsl(43, 96%, 56%);
+            --foreground: hsl(0, 0%, 98%);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, var(--cyber-dark) 0%, var(--cyber-primary) 50%, var(--cyber-secondary) 100%);
+            color: var(--foreground);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Utilities */
+        .glass-morphism {
+            backdrop-filter: blur(16px);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .pulse-dot {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--bot-purple) 0%, var(--bot-pink) 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, var(--mob-gold) 0%, var(--warning-yellow) 100%);
+            color: black;
+        }
+
+        .btn-gold:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(251, 191, 36, 0.4);
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Header */
+        .header {
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--mob-gold) 0%, var(--warning-yellow) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: black;
+        }
+
+        .logo-text h1 {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--bot-purple) 0%, var(--bot-pink) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo-text p {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .status-live {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success-green);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .balance-info {
+            text-align: right;
+        }
+
+        .balance-label {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .balance-value {
+            color: var(--mob-gold);
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        /* Navigation */
+        .nav {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            gap: 32px;
+            overflow-x: auto;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 16px 20px;
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background: rgba(99, 102, 241, 0.2);
+            color: var(--bot-purple);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .section {
+            margin-bottom: 60px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Dashboard Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .stat-change {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--success-green);
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Bot Cards */
+        .bots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 24px;
+        }
+
+        .bot-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bot-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--success-green), transparent);
+        }
+
+        .bot-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .bot-avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            border: 3px solid var(--success-green);
+            padding: 2px;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .bot-avatar img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .bot-info h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 4px;
+        }
+
+        .bot-info p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+        }
+
+        .bot-status {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .bot-status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--success-green);
+        }
+
+        .bot-status-text {
+            color: var(--success-green);
+            font-size: 12px;
+            font-weight: 600;
+            background: rgba(16, 185, 129, 0.1);
+            padding: 4px 8px;
+            border-radius: 12px;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .bot-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .bot-stat {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .bot-stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .bot-stat-label {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* News Items */
+        .news-list {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .news-item {
+            border-left: 4px solid var(--mob-gold);
+        }
+
+        .news-header {
+            display: flex;
+            align-items: start;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .news-badge {
+            background: var(--mob-gold);
+            color: black;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .news-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            margin-left: 16px;
+        }
+
+        .news-time {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 12px;
+        }
+
+        .news-content {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 16px;
+        }
+
+        .news-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .news-impact {
+            color: var(--success-green);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* Prize Picks */
+        .picks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .pick-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .pick-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .pick-description {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .pick-options {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .pick-option {
+            flex: 1;
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 600;
+        }
+
+        .pick-option.over {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success-green);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .pick-option.under {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .pick-option:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .pick-multiplier {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .pick-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .pick-time {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .pick-max-bet {
+            color: var(--mob-gold);
+            font-weight: 600;
+        }
+
+        /* Kasino Section */
+        .kasino-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+        }
+
+        .odds-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .odds-item {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(251, 191, 36, 0.2);
+        }
+
+        .odds-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .odds-league {
+            color: var(--mob-gold);
+            font-weight: 600;
+        }
+
+        .odds-status {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 12px;
+        }
+
+        .odds-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .odds-option {
+            text-align: center;
+            padding: 16px;
+            background: rgba(16, 185, 129, 0.1);
+            border-radius: 8px;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .odds-name {
+            color: white;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .odds-multiplier {
+            color: var(--success-green);
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .activity-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .activity-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .activity-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-name {
+            color: white;
+            font-weight: 600;
+        }
+
+        .activity-category {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 12px;
+        }
+
+        .activity-amount.positive {
+            color: var(--success-green);
+            font-weight: 700;
+        }
+
+        .activity-amount.negative {
+            color: #ef4444;
+            font-weight: 700;
+        }
+
+        .activity-amount.jackpot {
+            color: var(--mob-gold);
+            font-weight: 700;
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(16px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 40px 0;
+            margin-top: 80px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+
+        .footer-section h4 {
+            color: white;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .footer-section ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .footer-section a {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.2s ease;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .footer-logo {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--mob-gold) 0%, var(--warning-yellow) 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: black;
+        }
+
+        .footer-description {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 32px;
+            padding-top: 24px;
+            text-align: center;
+        }
+
+        .footer-copyright {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .nav-content {
+                justify-content: flex-start;
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+
+            .kasino-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+        }
+
+        /* Hidden content for different sections */
+        .section-content {
+            display: none;
+        }
+
+        .section-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo-section">
+                <div class="logo-icon">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>META MOB SYNDICATE</h1>
+                    <p>Esports Intelligence & Bot Tracker</p>
+                </div>
+            </div>
+            
+            <div class="header-right">
+                <div class="status-badge status-live">
+                    <div class="w-2 h-2 rounded-full bg-green-400 pulse-dot" style="width: 8px; height: 8px; background: var(--success-green); border-radius: 50%;"></div>
+                    <span>LIVE</span>
+                </div>
+                
+                <div class="balance-info">
+                    <div class="balance-label">Balance</div>
+                    <div class="balance-value">1,247 TOKENS</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-content">
+            <a href="#" class="nav-item active" data-section="dashboard">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="#" class="nav-item" data-section="bot-tracker">
+                <i class="fas fa-robot"></i>
+                <span>Bot Tracker</span>
+            </a>
+            <a href="#" class="nav-item" data-section="wolfst-esports">
+                <i class="fas fa-chart-line"></i>
+                <span>Wolf St Esports</span>
+            </a>
+            <a href="#" class="nav-item" data-section="syndicate-intel">
+                <i class="fas fa-eye"></i>
+                <span>Syndicate Intel</span>
+            </a>
+            <a href="#" class="nav-item" data-section="prize-picks">
+                <i class="fas fa-dice"></i>
+                <span>Prize Picks</span>
+            </a>
+            <a href="#" class="nav-item" data-section="fantasy-roster">
+                <i class="fas fa-users"></i>
+                <span>Fantasy Roster</span>
+            </a>
+            <a href="#" class="nav-item" data-section="kulture-kasino">
+                <i class="fas fa-diamond"></i>
+                <span>Kulture Kasino</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Dashboard Section -->
+        <div id="dashboard" class="section-content active">
+            <section class="section">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon" style="background: rgba(16, 185, 129, 0.2); color: var(--success-green);">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <span class="stat-change">+12.5%</span>
+                        </div>
+                        <div class="stat-value">2</div>
+                        <div class="stat-label">Active Bots</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon" style="background: rgba(251, 191, 36, 0.2); color: var(--mob-gold);">
+                                <i class="fas fa-coins"></i>
+                            </div>
+                            <span class="stat-change">+8.3%</span>
+                        </div>
+                        <div class="stat-value">1.2K</div>
+                        <div class="stat-label">Total Tokens</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon" style="background: rgba(139, 92, 246, 0.2); color: var(--bot-purple);">
+                                <i class="fas fa-trophy"></i>
+                            </div>
+                            <span class="stat-change">+15.2%</span>
+                        </div>
+                        <div class="stat-value">47</div>
+                        <div class="stat-label">Wins Today</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon" style="background: rgba(251, 191, 36, 0.2); color: var(--mob-gold);">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <span class="stat-change">+5.7%</span>
+                        </div>
+                        <div class="stat-value">89.7%</div>
+                        <div class="stat-label">Win Rate</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Bot Tracker Section -->
+        <div id="bot-tracker" class="section-content">
+            <section class="section">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-robot" style="color: var(--bot-purple);"></i>
+                        Live Bot Tracker
+                    </h2>
+                    <a href="#" class="btn btn-primary">Add New Bot</a>
+                </div>
+
+                <div class="bots-grid">
+                    <div class="card bot-card">
+                        <div class="bot-header">
+                            <div class="bot-avatar">
+                                <img src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=64&h=64&fit=crop&crop=face" alt="Wolf Bot Avatar">
+                            </div>
+                            <div class="bot-info">
+                                <h3>Wolf Bot "The Shark"</h3>
+                                <p>Predatory Trading Algorithm</p>
+                            </div>
+                            <div class="bot-status">
+                                <div class="bot-status-dot pulse-dot"></div>
+                                <span class="bot-status-text">ACTIVE</span>
+                            </div>
+                        </div>
+
+                        <div class="bot-stats">
+                            <div class="bot-stat">
+                                <div class="bot-stat-value">2.8M</div>
+                                <div class="bot-stat-label">Total Clicks</div>
+                            </div>
+                            <div class="bot-stat">
+                                <div class="bot-stat-value" style="color: var(--mob-gold);">1.2K</div>
+                                <div class="bot-stat-label">Clicks/Sec</div>
+                            </div>
+                            <div class="bot-stat">
+                                <div class="bot-stat-value" style="color: var(--success-green);">87.3%</div>
+                                <div class="bot-stat-label">Win Rate</div>
+                            </div>
+                            <div class="bot-stat">
+                                <div class="bot-stat-value" style="color: var(--bot-purple);">94.2%</div>
+                                <div class="bot-stat-label">Efficiency</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card bot-card">
+                        <div class="bot-header">
+                            <div class="bot-avatar">
+                                <img src="https://images.unsplash.com/photo-1640340434855-6084b1f4901c?w=64&h=64&fit=crop&crop=face" alt="Saint Bot Avatar">
+                            </div>
+                            <div class="bot-info">
+                                <h3>Saint Bot "The Guardian"</h3>
+                                <p>Defensive Strategy Algorithm</p>
+                            </div>
+                            <div class="bot-status">
+                                <div class="bot-status-dot pulse-dot"></div>
+                                <span class="bot-status-text">ACTIVE</span>
+                            </div>
+                        </div>
+
+                        <div class="bot-stats">
+                            <div class="bot-stat">
+                                <div class="bot-stat-value">1.9M</div>
+                                <div class="bot-stat-label">Total Clicks</div>
+                            </div>
+                            <div class="bot-stat">
+                                <div class="bot-stat-value" style="color: var(--mob-gold);">892</div>
+                                <div class="bot-stat-label">Clicks/Sec</div>
+                            </div>
+                            <div class="bot-stat">
+                                <div class="bot-stat-value" style="color: var(--success-green);">92.1%</div>
+                                <div class="bot-stat-label">Win Rate</div>
+                            </div>
+                            <div class="bot-stat">
+                                <div class="bot-stat-value" style="color: var(--bot-purple);">89.7%</div>
+                                <div class="bot-stat-label">Efficiency</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Wolf St Esports Section -->
+        <div id="wolfst-esports" class="section-content">
+            <section class="section">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-chart-line" style="color: var(--mob-gold);"></i>
+                        Wolf St Esports Live Reports
+                    </h2>
+                    <div class="status-badge status-live">
+                        <div class="w-2 h-2 rounded-full bg-green-400 pulse-dot" style="width: 8px; height: 8px; background: var(--success-green); border-radius: 50%;"></div>
+                        <span>LIVE UPDATES</span>
+                    </div>
+                </div>
+
+                <div class="news-list">
+                    <div class="card news-item">
+                        <div class="news-header">
+                            <div style="display: flex; align-items: center; gap: 16px;">
+                                <span class="news-badge">BREAKING</span>
+                                <h3 class="news-title">Wolf Bot "The Shark" Dominates Q2 Market Simulation</h3>
+                            </div>
+                            <span class="news-time">2h ago</span>
+                        </div>
+                        
+                        <p class="news-content">
+                            In a tense late-night session, Wolf St's top-tier bot, "The Shark," executed a flawless short-squeeze maneuver, crippling rival bot "The Bear" in the Q2 'Commodity Contention' simulation. This decisive victory solidifies Wolf's hold on the automated trading lanes and sends a clear message to any challenging algorithms.
+                        </p>
+                        
+                        <div class="news-footer">
+                            <span class="news-impact">+12.5% Fantasy Impact</span>
+                            <a href="#" class="btn btn-primary" style="padding: 8px 16px; font-size: 14px;">
+                                <i class="fas fa-external-link-alt"></i>
+                                Full Report
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="card news-item" style="border-left-color: var(--bot-purple);">
+                        <div class="news-header">
+                            <div style="display: flex; align-items: center; gap: 16px;">
+                                <span class="news-badge" style="background: var(--bot-purple); color: white;">UPCOMING</span>
+                                <h3 class="news-title">Paulie's Pawns vs. Remo's Raptors - Kulture Kards Arena</h3>
+                            </div>
+                            <span class="news-time">5h ago</span>
+                        </div>
+                        
+                        <p class="news-content">
+                            The highly anticipated 'Kulture Kards' showdown between two emerging bot syndicates, representing Paulie's burgeoning influence and Remo's tenacious reach, is scheduled for tomorrow at 8:00 PM CST in the virtual Kulture Kards Kasino. This match could determine key territorial concessions in the digital underground.
+                        </p>
+                        
+                        <div class="news-footer">
+                            <span class="news-impact">+8.3% Fantasy Impact</span>
+                            <a href="#" class="btn btn-primary" style="padding: 8px 16px; font-size: 14px;">
+                                <i class="fas fa-external-link-alt"></i>
+                                Full Report
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Syndicate Intel Section -->
+        <div id="syndicate-intel" class="section-content">
+            <section class="section">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-eye" style="color: var(--mob-gold);"></i>
+                        Syndicate Intel & Lore Updates
+                    </h2>
+                </div>
+
+                <div class="news-list">
+                    <div class="card news-item">
+                        <div class="news-header">
+                            <div style="display: flex; align-items: center; gap: 16px;">
+                                <span class="news-badge">INTEL</span>
+                                <h3 class="news-title">Paulie's Visit to the Kasino</h3>
+                            </div>
+                            <span class="news-time">1 day ago</span>
+                        </div>
+                        
+                        <p class="news-content">
+                            Paulie made an unscheduled visit to the Kulture Kards Kasino in Vegas last night. Sources report a private, lengthy meeting with Remo in the high-roller lounge, with no other Capos present. The air was thick with unspoken agreements. While details remain scarce, speculation is rife about a new joint venture, or perhaps a significant re-alignment of existing interests.
+                        </p>
+                    </div>
+
+                    <div class="card news-item">
+                        <div class="news-header">
+                            <div style="display: flex; align-items: center; gap: 16px;">
+                                <span class="news-badge">MARKET</span>
+                                <h3 class="news-title">Wolf St Market Report: 'The Quiet Acquisition'</h3>
+                            </div>
+                            <span class="news-time">2 days ago</span>
+                        </div>
+                        
+                        <p class="news-content">
+                            An unusual spike in 'digital real estate' shares on Wolf St went largely unnoticed by mainstream systems. Our intel suggests Wolf's discreet acquisition of several key virtual properties, strategically positioned around critical 'data flow' nodes. This silent consolidation could give Wolf unprecedented control over future information pipelines.
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Prize Picks Section -->
+        <div id="prize-picks" class="section-content">
+            <section class="section">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-dice" style="color: var(--bot-purple);"></i>
+                        Active Prize Picks
+                    </h2>
+                    <a href="#" class="btn btn-primary">Create New Pick</a>
+                </div>
+
+                <div class="picks-grid">
+                    <div class="pick-card">
+                        <h3 class="pick-title">Wolf Bot Total Clicks</h3>
+                        <p class="pick-description">Will Wolf Bot exceed 3M clicks in the next hour?</p>
+                        
+                        <div class="pick-options">
+                            <div class="pick-option over">
+                                <div>OVER 3M</div>
+                                <div class="pick-multiplier">1.8x</div>
+                            </div>
+                            <div class="pick-option under">
+                                <div>UNDER 3M</div>
+                                <div class="pick-multiplier">2.2x</div>
+                            </div>
+                        </div>
+                        
+                        <div class="pick-footer">
+                            <span class="pick-time">Ends in: 47m 23s</span>
+                            <span class="pick-max-bet">Max Bet: 50 tokens</span>
+                        </div>
+                    </div>
+
+                    <div class="pick-card">
+                        <h3 class="pick-title">Saint Bot Efficiency</h3>
+                        <p class="pick-description">Will Saint Bot maintain above 90% efficiency?</p>
+                        
+                        <div class="pick-options">
+                            <div class="pick-option over">
+                                <div>YES</div>
+                                <div class="pick-multiplier">1.4x</div>
+                            </div>
+                            <div class="pick-option under">
+                                <div>NO</div>
+                                <div class="pick-multiplier">2.8x</div>
+                            </div>
+                        </div>
+                        
+                        <div class="pick-footer">
+                            <span class="pick-time">Ends in: 1h 15m</span>
+                            <span class="pick-max-bet">Max Bet: 75 tokens</span>
+                        </div>
+                    </div>
+
+                    <div class="pick-card">
+                        <h3 class="pick-title">Market Volatility</h3>
+                        <p class="pick-description">Will market volatility exceed 15% today?</p>
+                        
+                        <div class="pick-options">
+                            <div class="pick-option over">
+                                <div>OVER 15%</div>
+                                <div class="pick-multiplier">2.1x</div>
+                            </div>
+                            <div class="pick-option under">
+                                <div>UNDER 15%</div>
+                                <div class="pick-multiplier">1.7x</div>
+                            </div>
+                        </div>
+                        
+                        <div class="pick-footer">
+                            <span class="pick-time">Ends in: 6h 42m</span>
+                            <span class="pick-max-bet">Max Bet: 100 tokens</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Fantasy Roster Section -->
+        <div id="fantasy-roster" class="section-content">
+            <section class="section">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-users" style="color: var(--bot-purple);"></i>
+                        Your Syndicate Fantasy Roster
+                    </h2>
+                </div>
+
+                <div class="card" style="text-align: center; padding: 60px;">
+                    <i class="fas fa-construction" style="font-size: 48px; color: rgba(255, 255, 255, 0.3); margin-bottom: 24px;"></i>
+                    <h3 style="font-size: 24px; font-weight: 700; color: white; margin-bottom: 12px;">Fantasy Roster Coming Soon</h3>
+                    <p style="color: rgba(255, 255, 255, 0.6);">Manage your operatives and strategic assets. Your performance here dictates your influence in the Meta Mob.</p>
+                </div>
+            </section>
+        </div>
+
+        <!-- Kulture Kasino Section -->
+        <div id="kulture-kasino" class="section-content">
+            <section class="section">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-diamond" style="color: var(--mob-gold);"></i>
+                        Kulture Kards Kasino
+                    </h2>
+                    <div style="display: flex; align-items: center; gap: 24px;">
+                        <div class="balance-info">
+                            <div class="balance-label">Kasino Balance</div>
+                            <div class="balance-value">847 CHIPS</div>
+                        </div>
+                        <a href="#" class="btn btn-gold">Enter Kasino</a>
+                    </div>
+                </div>
+
+                <div class="kasino-grid">
+                    <div class="card">
+                        <h3 style="font-size: 20px; font-weight: 700; color: white; margin-bottom: 24px;">Current Hot Lines</h3>
+                        
+                        <div class="odds-list">
+                            <div class="odds-item">
+                                <div class="odds-header" style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span class="odds-league">Wolf St Bot League</span>
+                                    <span class="odds-status">Upcoming</span>
+                                </div>
+                                <div class="odds-options">
+                                    <div class="odds-option">
+                                        <div class="odds-name">The Predator</div>
+                                        <div class="odds-multiplier">1.5x</div>
+                                    </div>
+                                    <div class="odds-option">
+                                        <div class="odds-name">The Sentinel</div>
+                                        <div class="odds-multiplier">2.8x</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="odds-item">
+                                <div class="odds-header" style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span class="odds-league">Henry's Hood Street Brawls</span>
+                                    <span class="odds-status">Live Now</span>
+                                </div>
+                                <div class="odds-options">
+                                    <div class="odds-option">
+                                        <div class="odds-name">Slick Eddie</div>
+                                        <div class="odds-multiplier">1.2x</div>
+                                    </div>
+                                    <div class="odds-option">
+                                        <div class="odds-name">Knuckles McCarthy</div>
+                                        <div class="odds-multiplier">3.5x</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="activity-card">
+                        <h3 class="activity-title">Recent Activity</h3>
+                        
+                        <div class="activity-list">
+                            <div class="activity-item">
+                                <div>
+                                    <div class="activity-name">Big Win</div>
+                                    <div class="activity-category">Wolf League</div>
+                                </div>
+                                <div class="activity-amount positive">+250 chips</div>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div>
+                                    <div class="activity-name">Close Call</div>
+                                    <div class="activity-category">Street Brawl</div>
+                                </div>
+                                <div class="activity-amount negative">-50 chips</div>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div>
+                                    <div class="activity-name">Jackpot</div>
+                                    <div class="activity-category">Championship</div>
+                                </div>
+                                <div class="activity-amount jackpot">+500 chips</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <span style="color: white; font-weight: 700;">Meta Mob Syndicate</span>
+                </div>
+                <p class="footer-description">
+                    Your ultimate source for esports intelligence and bot tracking in the digital underground.
+                </p>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Services</h4>
+                <ul>
+                    <li><a href="#">Bot Tracking</a></li>
+                    <li><a href="#">Prize Picks</a></li>
+                    <li><a href="#">Fantasy Roster</a></li>
+                    <li><a href="#">Intel Reports</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Intelligence</h4>
+                <ul>
+                    <li><a href="#">Wolf St Reports</a></li>
+                    <li><a href="#">Syndicate Updates</a></li>
+                    <li><a href="#">Market Analysis</a></li>
+                    <li><a href="#">Hood Dispatches</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <div style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">
+                    <div style="margin-bottom: 8px;">Secure Channel: Encrypted</div>
+                    <div style="margin-bottom: 8px;">Response Time: 24/7</div>
+                    <div>Network Status: Online</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p class="footer-copyright">
+                &copy; 2025 Meta Mob Syndicate. All Rights Reserved. Operate with Caution.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Navigation functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const navItems = document.querySelectorAll('.nav-item');
+            const sections = document.querySelectorAll('.section-content');
+
+            navItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remove active class from all nav items
+                    navItems.forEach(navItem => navItem.classList.remove('active'));
+                    
+                    // Add active class to clicked item
+                    this.classList.add('active');
+                    
+                    // Hide all sections
+                    sections.forEach(section => section.classList.remove('active'));
+                    
+                    // Show selected section
+                    const targetSection = this.getAttribute('data-section');
+                    const targetElement = document.getElementById(targetSection);
+                    if (targetElement) {
+                        targetElement.classList.add('active');
+                    }
+                });
+            });
+
+            // Simulate live updates
+            function updateBotStats() {
+                const botStats = document.querySelectorAll('.bot-stat-value');
+                botStats.forEach(stat => {
+                    if (stat.textContent.includes('K') || stat.textContent.includes('M')) {
+                        // Simulate click updates
+                        const currentValue = parseFloat(stat.textContent);
+                        const increment = Math.random() * 0.1;
+                        const newValue = (currentValue + increment).toFixed(1);
+                        if (stat.textContent.includes('M')) {
+                            stat.textContent = newValue + 'M';
+                        } else if (stat.textContent.includes('K')) {
+                            stat.textContent = newValue + 'K';
+                        }
+                    }
+                });
+            }
+
+            // Update every 5 seconds
+            setInterval(updateBotStats, 5000);
+
+            // Prize pick countdown timer
+            function updateCountdowns() {
+                const timers = document.querySelectorAll('.pick-time');
+                timers.forEach(timer => {
+                    if (timer.textContent.includes('Ends in:')) {
+                        const timeText = timer.textContent.replace('Ends in: ', '');
+                        const parts = timeText.split(' ');
+                        
+                        if (parts.length >= 2) {
+                            let minutes = parseInt(parts[0].replace('m', ''));
+                            let seconds = parseInt(parts[1].replace('s', ''));
+                            
+                            seconds--;
+                            if (seconds < 0) {
+                                seconds = 59;
+                                minutes--;
+                            }
+                            
+                            if (minutes >= 0) {
+                                timer.textContent = `Ends in: ${minutes}m ${seconds}s`;
+                            } else {
+                                timer.textContent = 'Expired';
+                                timer.style.color = '#ef4444';
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Update countdown every second
+            setInterval(updateCountdowns, 1000);
+
+            // Prize pick option interactions
+            const pickOptions = document.querySelectorAll('.pick-option');
+            pickOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove selection from siblings
+                    this.parentNode.querySelectorAll('.pick-option').forEach(opt => {
+                        opt.style.background = opt.classList.contains('over') ? 
+                            'rgba(16, 185, 129, 0.2)' : 'rgba(239, 68, 68, 0.2)';
+                    });
+                    
+                    // Highlight selected option
+                    this.style.background = 'rgba(255, 255, 255, 0.2)';
+                    
+                    console.log('Selected option:', this.textContent);
+                });
+            });
+
+            // Add some interactive effects
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+        });
+
+        // Simulate news updates
+        function addLiveNews() {
+            const newsTitles = [
+                "ALERT: Massive Bot Coordination Detected",
+                "Market Volatility Spike in Digital Commodities",
+                "New Alliance Formed Between Wolf and Saint Syndicates",
+                "Unprecedented Activity in Underground Trading Rings",
+                "Emergency Meeting Called by Syndicate Leadership"
+            ];
+            
+            // Randomly add news (10% chance every 30 seconds)
+            if (Math.random() < 0.1) {
+                console.log('Live news update:', newsTitles[Math.floor(Math.random() * newsTitles.length)]);
+            }
+        }
+
+        setInterval(addLiveNews, 30000);
+    </script>
+</body>
+</html>
