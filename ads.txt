@@ -1,1 +1,1 @@
-Redirect 301 /ads.txt https://srv.adstxtmanager.com/19390/metama.online
+https://srv.adstxtmanager.com/19390/metama.online
