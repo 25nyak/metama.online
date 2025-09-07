@@ -12,7 +12,6 @@
     <title>Meta Mob Syndicate - Esports Intelligence & Bot Tracker</title>
     <meta name="description" content="Unified cyberpunk gaming platform combining Meta Mob Syndicate's esports intelligence with Bot Tracker's prize pick betting system">
     
-    <!-- Fonts and Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
@@ -789,7 +788,6 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
     <header class="header">
         <div class="header-content">
             <div class="logo-section">
@@ -816,7 +814,6 @@
         </div>
     </header>
 
-    <!-- Navigation -->
     <nav class="nav">
         <div class="nav-content">
             <a href="#" class="nav-item active" data-section="dashboard">
@@ -850,9 +847,7 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
     <main class="container">
-        <!-- Dashboard Section -->
         <div id="dashboard" class="section-content active">
             <section class="section">
                 <div class="stats-grid">
@@ -903,7 +898,6 @@
             </section>
         </div>
 
-        <!-- Bot Tracker Section -->
         <div id="bot-tracker" class="section-content">
             <section class="section">
                 <div class="section-header">
@@ -988,7 +982,6 @@
             </section>
         </div>
 
-        <!-- Wolf St Esports Section -->
         <div id="wolfst-esports" class="section-content">
             <section class="section">
                 <div class="section-header">
@@ -1050,7 +1043,6 @@
             </section>
         </div>
 
-        <!-- Syndicate Intel Section -->
         <div id="syndicate-intel" class="section-content">
             <section class="section">
                 <div class="section-header">
@@ -1092,7 +1084,6 @@
             </section>
         </div>
 
-        <!-- Prize Picks Section -->
         <div id="prize-picks" class="section-content">
             <section class="section">
                 <div class="section-header">
@@ -1120,7 +1111,7 @@
                         </div>
                         
                         <div class="pick-footer">
-                            <span class="pick-time">Ends in: 47m 23s</span>
+                            <span class="pick-time" data-time-left="2843">Ends in: 47m 23s</span>
                             <span class="pick-max-bet">Max Bet: 50 tokens</span>
                         </div>
                     </div>
@@ -1141,7 +1132,7 @@
                         </div>
                         
                         <div class="pick-footer">
-                            <span class="pick-time">Ends in: 1h 15m</span>
+                            <span class="pick-time" data-time-left="4500">Ends in: 1h 15m</span>
                             <span class="pick-max-bet">Max Bet: 75 tokens</span>
                         </div>
                     </div>
@@ -1162,7 +1153,7 @@
                         </div>
                         
                         <div class="pick-footer">
-                            <span class="pick-time">Ends in: 6h 42m</span>
+                            <span class="pick-time" data-time-left="24120">Ends in: 6h 42m</span>
                             <span class="pick-max-bet">Max Bet: 100 tokens</span>
                         </div>
                     </div>
@@ -1170,7 +1161,6 @@
             </section>
         </div>
 
-        <!-- Fantasy Roster Section -->
         <div id="fantasy-roster" class="section-content">
             <section class="section">
                 <div class="section-header">
@@ -1188,7 +1178,6 @@
             </section>
         </div>
 
-        <!-- Kulture Kasino Section -->
         <div id="kulture-kasino" class="section-content">
             <section class="section">
                 <div class="section-header">
@@ -1280,7 +1269,6 @@
         </div>
     </main>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-section">
@@ -1333,25 +1321,21 @@
     </footer>
 
     <script>
-        // Navigation functionality
         document.addEventListener('DOMContentLoaded', function() {
             const navItems = document.querySelectorAll('.nav-item');
             const sections = document.querySelectorAll('.section-content');
 
+            // --- Navigation Functionality ---
             navItems.forEach(item => {
                 item.addEventListener('click', function(e) {
                     e.preventDefault();
                     
-                    // Remove active class from all nav items
+                    // Remove active class from all nav items and sections
                     navItems.forEach(navItem => navItem.classList.remove('active'));
-                    
-                    // Add active class to clicked item
-                    this.classList.add('active');
-                    
-                    // Hide all sections
                     sections.forEach(section => section.classList.remove('active'));
                     
-                    // Show selected section
+                    // Add active class to the clicked item and its corresponding section
+                    this.classList.add('active');
                     const targetSection = this.getAttribute('data-section');
                     const targetElement = document.getElementById(targetSection);
                     if (targetElement) {
@@ -1360,106 +1344,128 @@
                 });
             });
 
-            // Simulate live updates
+            // --- Bot Stat Simulation ---
             function updateBotStats() {
                 const botStats = document.querySelectorAll('.bot-stat-value');
                 botStats.forEach(stat => {
-                    if (stat.textContent.includes('K') || stat.textContent.includes('M')) {
-                        // Simulate click updates
-                        const currentValue = parseFloat(stat.textContent);
-                        const increment = Math.random() * 0.1;
-                        const newValue = (currentValue + increment).toFixed(1);
-                        if (stat.textContent.includes('M')) {
-                            stat.textContent = newValue + 'M';
-                        } else if (stat.textContent.includes('K')) {
-                            stat.textContent = newValue + 'K';
-                        }
+                    const textContent = stat.textContent;
+                    const isK = textContent.includes('K');
+                    const isM = textContent.includes('M');
+                    
+                    if (isK || isM) {
+                        let value = parseFloat(textContent.replace('K', '').replace('M', ''));
+                        const increment = Math.random() * 0.05; // Smaller, more realistic increment
+                        value += increment;
+                        stat.textContent = `${value.toFixed(1)}${isM ? 'M' : 'K'}`;
                     }
                 });
             }
 
-            // Update every 5 seconds
             setInterval(updateBotStats, 5000);
 
-            // Prize pick countdown timer
+            // --- Prize Pick Countdown Timer ---
             function updateCountdowns() {
                 const timers = document.querySelectorAll('.pick-time');
                 timers.forEach(timer => {
-                    if (timer.textContent.includes('Ends in:')) {
-                        const timeText = timer.textContent.replace('Ends in: ', '');
-                        const parts = timeText.split(' ');
-                        
-                        if (parts.length >= 2) {
-                            let minutes = parseInt(parts[0].replace('m', ''));
-                            let seconds = parseInt(parts[1].replace('s', ''));
-                            
-                            seconds--;
-                            if (seconds < 0) {
-                                seconds = 59;
-                                minutes--;
-                            }
-                            
-                            if (minutes >= 0) {
-                                timer.textContent = `Ends in: ${minutes}m ${seconds}s`;
-                            } else {
-                                timer.textContent = 'Expired';
-                                timer.style.color = '#ef4444';
-                            }
-                        }
+                    // Check if a time value exists in the data attribute
+                    let timeLeft = parseInt(timer.getAttribute('data-time-left'));
+                    
+                    if (isNaN(timeLeft) || timeLeft <= 0) {
+                        timer.textContent = 'Expired';
+                        timer.style.color = '#ef4444';
+                        return; // Stop processing this timer
                     }
+                    
+                    // Decrement the time and update the data attribute
+                    timeLeft--;
+                    timer.setAttribute('data-time-left', timeLeft);
+                    
+                    const minutes = Math.floor(timeLeft / 60);
+                    const seconds = timeLeft % 60;
+                    
+                    timer.textContent = `Ends in: ${minutes}m ${seconds}s`;
                 });
             }
 
-            // Update countdown every second
+            // The initial time values are now stored in data-attributes
+            // We'll update the display every second from that source
             setInterval(updateCountdowns, 1000);
 
-            // Prize pick option interactions
+            // --- Prize pick option interactions ---
             const pickOptions = document.querySelectorAll('.pick-option');
             pickOptions.forEach(option => {
                 option.addEventListener('click', function() {
-                    // Remove selection from siblings
-                    this.parentNode.querySelectorAll('.pick-option').forEach(opt => {
-                        opt.style.background = opt.classList.contains('over') ? 
-                            'rgba(16, 185, 129, 0.2)' : 'rgba(239, 68, 68, 0.2)';
-                    });
+                    const parent = this.closest('.pick-card');
+                    if (parent) {
+                        // Remove selection from all options within this card
+                        parent.querySelectorAll('.pick-option').forEach(opt => {
+                            opt.classList.remove('selected');
+                        });
+                    }
                     
-                    // Highlight selected option
-                    this.style.background = 'rgba(255, 255, 255, 0.2)';
+                    // Add selection to the clicked option
+                    this.classList.add('selected');
                     
-                    console.log('Selected option:', this.textContent);
+                    console.log('Selected option:', this.textContent.trim());
                 });
             });
-
-            // Add some interactive effects
-            const cards = document.querySelectorAll('.card');
-            cards.forEach(card => {
-                card.addEventListener('mouseenter', function() {
-                    this.style.transform = 'translateY(-5px)';
-                });
-                
-                card.addEventListener('mouseleave', function() {
-                    this.style.transform = 'translateY(0)';
-                });
-            });
-        });
-
-        // Simulate news updates
-        function addLiveNews() {
-            const newsTitles = [
-                "ALERT: Massive Bot Coordination Detected",
-                "Market Volatility Spike in Digital Commodities",
-                "New Alliance Formed Between Wolf and Saint Syndicates",
-                "Unprecedented Activity in Underground Trading Rings",
-                "Emergency Meeting Called by Syndicate Leadership"
-            ];
             
-            // Randomly add news (10% chance every 30 seconds)
-            if (Math.random() < 0.1) {
-                console.log('Live news update:', newsTitles[Math.floor(Math.random() * newsTitles.length)]);
-            }
-        }
+            // Add a style for the selected option to the CSS or as a new class
+            // This is handled better with CSS than inline JS styles
+            const style = document.createElement('style');
+            style.innerHTML = `
+                .pick-option.selected {
+                    background: rgba(255, 255, 255, 0.2) !important;
+                    border-color: rgba(255, 255, 255, 0.3) !important;
+                }
+            `;
+            document.head.appendChild(style);
 
-        setInterval(addLiveNews, 30000);
+
+            // --- Live News Simulation ---
+            function addLiveNews() {
+                const newsList = document.querySelector('#wolfst-esports .news-list');
+                const newsTitles = [
+                    "ALERT: Massive Bot Coordination Detected",
+                    "Market Volatility Spike in Digital Commodities",
+                    "New Alliance Formed Between Wolf and Saint Syndicates",
+                    "Unprecedented Activity in Underground Trading Rings",
+                    "Emergency Meeting Called by Syndicate Leadership"
+                ];
+
+                // Randomly add news (10% chance every 30 seconds)
+                if (Math.random() < 0.1) {
+                    const newTitle = newsTitles[Math.floor(Math.random() * newsTitles.length)];
+                    const newArticle = `
+                        <div class="card news-item">
+                            <div class="news-header">
+                                <div style="display: flex; align-items: center; gap: 16px;">
+                                    <span class="news-badge" style="background: var(--bot-purple); color: white;">LIVE</span>
+                                    <h3 class="news-title">${newTitle}</h3>
+                                </div>
+                                <span class="news-time">just now</span>
+                            </div>
+                            <p class="news-content">
+                                Real-time intel from the network confirms a significant event. Our bots are on high alert.
+                            </p>
+                            <div class="news-footer">
+                                <span class="news-impact">Market Impact: HIGH</span>
+                                <a href="#" class="btn btn-primary" style="padding: 8px 16px; font-size: 14px;">
+                                    <i class="fas fa-external-link-alt"></i>
+                                    Full Report
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                    
+                    // Prepend new article to the list
+                    newsList.insertAdjacentHTML('afterbegin', newArticle);
+                    console.log('Live news update added:', newTitle);
+                }
+            }
+
+            setInterval(addLiveNews, 30000);
+        });
     </script>
 </body>
 </html>
